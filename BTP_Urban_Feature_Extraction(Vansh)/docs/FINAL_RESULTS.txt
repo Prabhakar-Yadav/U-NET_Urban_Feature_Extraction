@@ -1,0 +1,58 @@
+Urban Feature Extraction Project - Final Results
+
+Project:
+Urban Feature Extraction from High-Resolution Panchromatic Satellite Imagery using Deep Learning
+
+Dataset used for final run:
+JNPA/JNPA_2_5.tif
+
+Classes used in the final map:
+0 - Water Bodies
+1 - Industrial / Port Infrastructure
+2 - Bare Land / Soil
+3 - Vegetation / Mangroves
+4 - Urban Built-up
+
+What was done:
+1. The JNPA panchromatic GeoTIFF image was loaded and normalized.
+2. The image was divided into 256 x 256 patches.
+3. Low-information patches were filtered using texture variation.
+4. Features were extracted from each patch using intensity, texture, and edge information.
+5. Unsupervised clustering was applied.
+6. The clusters were manually interpreted and mapped to real land-use classes.
+7. Pseudo-label masks were created from the cluster mapping.
+8. A U-Net segmentation model was trained on these pseudo-labels.
+9. A full output map was reconstructed for the whole image.
+
+Important note:
+Because the labels were created automatically from clustering, the evaluation scores are against pseudo-labels, not manual ground-truth labels.
+
+Main model result:
+Best epoch: 17
+Validation Pixel Accuracy: 0.4896
+Validation Mean IoU: 0.3350
+
+Interpretation in simple language:
+- The model learned the major land-use patterns reasonably well.
+- Water, port/industrial zones, vegetation, barren land, and built-up areas were identified.
+- The direct cluster-based final map looked visually cleaner than the learned U-Net map in large homogeneous water regions.
+- Because of that, the cluster-based map is recommended as the final presentation map.
+
+Recommended final map:
+outputs/jnpa_training_run/final_results_map.png
+
+Other useful result files:
+- Full summary JSON:
+  outputs/jnpa_training_run/run_summary.json
+- Best trained model:
+  outputs/jnpa_training_run/best_model.pt
+- U-Net output overlay:
+  outputs/jnpa_training_run/predictions/full_prediction_overlay.png
+- Cluster-based output overlay:
+  outputs/jnpa_training_run/predictions/clustering_baseline_overlay.png
+- Training history:
+  outputs/jnpa_training_run/training_history.csv
+
+Conclusion:
+The project pipeline was completed end to end for the JNPA dataset.
+The final output map successfully identifies different urban and environmental elements from monochromatic satellite imagery.

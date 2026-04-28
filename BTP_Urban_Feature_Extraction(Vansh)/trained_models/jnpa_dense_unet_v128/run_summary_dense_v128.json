@@ -1,0 +1,225 @@
+{
+  "config": {
+    "dataset_key": "jnpa_dense_v128",
+    "output_dir": "outputs/jnpa_dense_segmentation_v128",
+    "seed": 42,
+    "robust_percentiles": [
+      1.0,
+      99.0
+    ],
+    "resize_for_teacher_features": 32,
+    "teacher_canny_low": 60,
+    "teacher_canny_high": 160,
+    "pixel_mlp_hidden": 64,
+    "pixel_mlp_epochs": 18,
+    "pixel_mlp_batch_size": 8192,
+    "pixel_mlp_learning_rate": 0.001,
+    "pixel_val_fraction": 0.2,
+    "unet_epochs": 8,
+    "unet_batch_size": 24,
+    "unet_learning_rate": 0.0008,
+    "unet_weight_decay": 0.0001,
+    "unet_patience": 3,
+    "train_fraction": 0.8,
+    "num_workers": 0,
+    "base_channels": 16,
+    "preview_count": 8,
+    "compare_margin_miou": 0.03,
+    "max_train_patches": 1800,
+    "max_val_patches": 480
+  },
+  "dataset": {
+    "name": "JNPA Dense Segmentation V128",
+    "image_path": "JNPA/JNPA_2_5.tif",
+    "class_names": {
+      "0": "Water Bodies",
+      "1": "Industrial / Port Infrastructure",
+      "2": "Bare Land / Soil",
+      "3": "Vegetation / Mangroves",
+      "4": "Urban Built-up"
+    },
+    "raster_metadata": {
+      "path": "JNPA/JNPA_2_5.tif",
+      "width": 9166,
+      "height": 7554,
+      "dtype": "int16",
+      "crs": "EPSG:32643",
+      "transform": [
+        2.499904191487,
+        0.0,
+        276890.1208398463,
+        0.0,
+        -2.4997374418850034,
+        2103003.423219135,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nodata": -32768.0,
+      "normalization_low": 79.0,
+      "normalization_high": 148.0
+    },
+    "teacher_patch_size": 256,
+    "student_patch_size": 128,
+    "teacher_seed_patch_count": 772,
+    "dense_dataset_patch_count": 4189,
+    "train_patch_count": 1800,
+    "val_patch_count": 480
+  },
+  "pixel_teacher_metrics": {
+    "reused_from_existing_dense_dataset": true
+  },
+  "teacher_baseline_metrics": {
+    "pixel_accuracy": 0.5737996419270833,
+    "class_accuracy": [
+      0.4609315942108663,
+      0.7560063610295956,
+      0.4571579758904434,
+      0.40663650860088174,
+      0.5592712604970751
+    ],
+    "class_iou": [
+      0.1614308947562053,
+      0.7018534142085776,
+      0.3612992864930777,
+      0.2520040486423273,
+      0.31815858654033163
+    ],
+    "mean_iou": 0.35894924612810386
+  },
+  "hard_unet": {
+    "training": {
+      "best_epoch": 6,
+      "best_val_metrics": {
+        "pixel_accuracy": 0.9114417756656473,
+        "class_accuracy": [
+          0.9884368063266858,
+          0.9960454550459285,
+          0.832949646760873,
+          0.8457956331092832,
+          0.8792817594844924
+        ],
+        "class_iou": [
+          0.7304091550807705,
+          0.9588056531927358,
+          0.8152695639582944,
+          0.7330758341566471,
+          0.7699936588568963
+        ],
+        "mean_iou": 0.8015107730490689
+      }
+    },
+    "final_val_metrics": {
+      "pixel_accuracy": 0.8927936553955078,
+      "class_accuracy": [
+        0.9989475730366641,
+        0.9913620345331814,
+        0.7871406329424911,
+        0.8608669537437069,
+        0.8217127127463157
+      ],
+      "class_iou": [
+        0.5582538813426718,
+        0.9736236377541158,
+        0.7334705398147893,
+        0.7500927195254958,
+        0.78693145766463
+      ],
+      "mean_iou": 0.7604744472203405
+    },
+    "history_path": "outputs/jnpa_dense_segmentation_v128/hard_unet_history.csv",
+    "model_path": "outputs/jnpa_dense_segmentation_v128/hard_unet_best_model.pt",
+    "prediction_maps": {
+      "label_path": "outputs/jnpa_dense_segmentation_v128/predictions/hard_unet_v128_labels.npy",
+      "color_path": "outputs/jnpa_dense_segmentation_v128/predictions/hard_unet_v128_color.png",
+      "overlay_path": "outputs/jnpa_dense_segmentation_v128/predictions/hard_unet_v128_overlay.png"
+    }
+  },
+  "soft_unet": {
+    "training": {
+      "best_epoch": 8,
+      "best_val_metrics": {
+        "pixel_accuracy": 0.9106505076090495,
+        "class_accuracy": [
+          0.7136866026642384,
+          0.9932603454890184,
+          0.9174249824594046,
+          0.7981903184639069,
+          0.9020299589059255
+        ],
+        "class_iou": [
+          0.6768894307278531,
+          0.9694624451720141,
+          0.8337518164604342,
+          0.6977824789652487,
+          0.7583741673756125
+        ],
+        "mean_iou": 0.7872520677402325,
+        "soft_cross_entropy": 1.135905933380127
+      }
+    },
+    "final_val_metrics": {
+      "pixel_accuracy": 0.9106505076090495,
+      "class_accuracy": [
+        0.7136866026642384,
+        0.9932603454890184,
+        0.9174249824594046,
+        0.7981903184639069,
+        0.9020299589059255
+      ],
+      "class_iou": [
+        0.6768894307278531,
+        0.9694624451720141,
+        0.8337518164604342,
+        0.6977824789652487,
+        0.7583741673756125
+      ],
+      "mean_iou": 0.7872520677402325,
+      "soft_cross_entropy": 1.135905933380127
+    },
+    "history_path": "outputs/jnpa_dense_segmentation_v128/soft_unet_history.csv",
+    "model_path": "outputs/jnpa_dense_segmentation_v128/soft_unet_best_model.pt",
+    "prediction_maps": {
+      "label_path": "outputs/jnpa_dense_segmentation_v128/predictions/soft_unet_v128_labels.npy",
+      "color_path": "outputs/jnpa_dense_segmentation_v128/predictions/soft_unet_v128_color.png",
+      "overlay_path": "outputs/jnpa_dense_segmentation_v128/predictions/soft_unet_v128_overlay.png"
+    }
+  },
+  "best_variant": "soft_unet_v128",
+  "best_variant_metrics": {
+    "pixel_accuracy": 0.9106505076090495,
+    "class_accuracy": [
+      0.7136866026642384,
+      0.9932603454890184,
+      0.9174249824594046,
+      0.7981903184639069,
+      0.9020299589059255
+    ],
+    "class_iou": [
+      0.6768894307278531,
+      0.9694624451720141,
+      0.8337518164604342,
+      0.6977824789652487,
+      0.7583741673756125
+    ],
+    "mean_iou": 0.7872520677402325,
+    "soft_cross_entropy": 1.135905933380127
+  },
+  "teacher_baseline_maps": {
+    "label_path": "outputs/jnpa_dense_segmentation_v128/predictions/teacher_baseline_v256_labels.npy",
+    "color_path": "outputs/jnpa_dense_segmentation_v128/predictions/teacher_baseline_v256_color.png",
+    "overlay_path": "outputs/jnpa_dense_segmentation_v128/predictions/teacher_baseline_v256_overlay.png"
+  },
+  "comparison": {
+    "baseline_mean_iou": 0.35894924612810386,
+    "best_mean_iou": 0.7872520677402325,
+    "mean_iou_improvement": 0.4283028216121286,
+    "should_promote_to_platform": true,
+    "promotion_rule": "Promote only if mean IoU improves by at least 0.03."
+  },
+  "artifacts": {
+    "dense_preview_panel": "outputs/jnpa_dense_segmentation_v128/dense_label_preview_panel.png",
+    "comparison_board": "outputs/jnpa_dense_segmentation_v128/comparison_summary_board.png",
+    "dense_metadata_path": "outputs/jnpa_dense_segmentation_v128/dense_dataset/metadata.csv"
+  }
+}

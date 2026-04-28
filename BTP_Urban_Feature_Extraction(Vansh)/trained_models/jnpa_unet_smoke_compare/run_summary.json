@@ -1,0 +1,200 @@
+{
+  "config": {
+    "dataset_key": "jnpa",
+    "output_dir": "outputs/jnpa_smoke",
+    "seed": 42,
+    "robust_percentiles": [
+      1.0,
+      99.0
+    ],
+    "resize_for_features": 32,
+    "pca_components": 25,
+    "epochs": 1,
+    "batch_size": 8,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 6,
+    "train_fraction": 0.8,
+    "num_workers": 0,
+    "canny_low": 60,
+    "canny_high": 160,
+    "val_preview_count": 6,
+    "contact_sheet_limit": 16
+  },
+  "dataset": {
+    "key": "jnpa",
+    "spec": {
+      "name": "JNPA 2.5m PAN",
+      "image_path": "JNPA/JNPA_2_5.tif",
+      "patch_size": 256,
+      "std_threshold": 0.045,
+      "valid_fraction": 0.85,
+      "notes": "The JNPA fine-cluster mapping was assigned manually after inspecting cluster contact sheets generated from the raw panchromatic patches.",
+      "class_names": {
+        "0": "Water Bodies",
+        "1": "Industrial / Port Infrastructure",
+        "2": "Bare Land / Soil",
+        "3": "Vegetation / Mangroves",
+        "4": "Urban Built-up"
+      },
+      "cluster_to_class": {
+        "0": 1,
+        "1": 2,
+        "2": 3,
+        "3": 1,
+        "4": 0,
+        "5": 4,
+        "6": 4
+      },
+      "cluster_descriptions": {
+        "0": "Small bright outlier group with tanks, paved yards, and port-side structures.",
+        "1": "Dry terrain, exposed soil, quarries, sparse roads, and mixed barren ground.",
+        "2": "Dark textured vegetation, mangroves, wetlands, and vegetated coastal edges.",
+        "3": "Dense industrial estates, tank farms, container yards, and port infrastructure.",
+        "4": "Open water, harbor water, rivers, and large homogeneous dark water bodies.",
+        "5": "Mixed built-up urban fabric with roads, settlements, and developed land near water.",
+        "6": "Transport corridors and medium-density built-up urban areas."
+      }
+    },
+    "raster_metadata": {
+      "path": "JNPA/JNPA_2_5.tif",
+      "width": 9166,
+      "height": 7554,
+      "dtype": "int16",
+      "crs": "EPSG:32643",
+      "transform": [
+        2.499904191487,
+        0.0,
+        276890.1208398463,
+        0.0,
+        -2.4997374418850034,
+        2103003.423219135
+      ],
+      "nodata": -32768.0,
+      "normalization_low": 79.0,
+      "normalization_high": 148.0
+    },
+    "total_grid_patches": 1015,
+    "kept_training_patches": 735
+  },
+  "previews": {
+    "full_scene_preview": "outputs/jnpa_smoke/previews/full_scene_preview.png"
+  },
+  "training": {
+    "device": "mps",
+    "best_epoch": 1,
+    "best_val_metrics": {
+      "pixel_accuracy": 0.36897392013446,
+      "class_accuracy": [
+        0.10844662314967106,
+        0.7932342529296875,
+        0.6365796770368304,
+        0.2091118065086571,
+        0.1749047173394097
+      ],
+      "class_iou": [
+        0.08855388739735406,
+        0.32472771429927816,
+        0.3087105335430924,
+        0.16404219938920234,
+        0.13036457992733233
+      ],
+      "mean_iou": 0.20327978291125187,
+      "loss": 2.1495514597211565
+    }
+  },
+  "final_train_metrics": {
+    "pixel_accuracy": 0.3358420806677163,
+    "class_accuracy": [
+      0.12202969112911739,
+      0.7915037178698882,
+      0.5690051487513951,
+      0.1567176612647804,
+      0.1481255893049569
+    ],
+    "class_iou": [
+      0.09405464200534033,
+      0.2877293408351321,
+      0.2806974954876194,
+      0.12585613170425197,
+      0.1120946541544383
+    ],
+    "mean_iou": 0.18008645283735641,
+    "loss": 2.245534643834951
+  },
+  "final_val_metrics": {
+    "pixel_accuracy": 0.36897392013446,
+    "class_accuracy": [
+      0.10844662314967106,
+      0.7932342529296875,
+      0.6365796770368304,
+      0.2091118065086571,
+      0.1749047173394097
+    ],
+    "class_iou": [
+      0.08855388739735406,
+      0.32472771429927816,
+      0.3087105335430924,
+      0.16404219938920234,
+      0.13036457992733233
+    ],
+    "mean_iou": 0.20327978291125187,
+    "loss": 2.187828248860885
+  },
+  "reconstruction": {
+    "label_path": "outputs/jnpa_smoke/predictions/full_prediction_labels.npy",
+    "color_path": "outputs/jnpa_smoke/predictions/full_prediction_color.png",
+    "overlay_path": "outputs/jnpa_smoke/predictions/full_prediction_overlay.png"
+  },
+  "cluster_summary_path": "outputs/jnpa_smoke/cluster_summary.csv",
+  "metadata_path": "outputs/jnpa_smoke/dataset/metadata.csv",
+  "training_history_path": "outputs/jnpa_smoke/training_history.csv",
+  "feature_summary": {
+    "mean": [
+      0.3343909978866577,
+      0.1441279947757721,
+      0.17334100604057312,
+      0.5226759910583496,
+      0.29910901188850403,
+      0.25938498973846436,
+      0.19702599942684174
+    ],
+    "std": [
+      0.1451829969882965,
+      0.0551999993622303,
+      0.10039400309324265,
+      0.20968200266361237,
+      0.1076660007238388,
+      0.09098099917173386,
+      0.08847399801015854
+    ]
+  },
+  "pca_explained_variance": [
+    0.5484129786491394,
+    0.06100500002503395,
+    0.052400000393390656,
+    0.024778999388217926,
+    0.019669000059366226,
+    0.014866000041365623,
+    0.012543000280857086,
+    0.011142999865114689,
+    0.009697999805212021,
+    0.007980999536812305,
+    0.007143000140786171,
+    0.0067889997735619545,
+    0.005975000094622374,
+    0.005493000149726868,
+    0.005167999770492315,
+    0.004745999816805124,
+    0.00442600017413497,
+    0.004164999816566706,
+    0.003926000092178583,
+    0.003654999891296029,
+    0.0034650000743567944,
+    0.0031999999191612005,
+    0.0029869999270886183,
+    0.0028979999478906393,
+    0.0028089999686926603
+  ],
+  "kmeans_inertia": 8806.7353515625
+}

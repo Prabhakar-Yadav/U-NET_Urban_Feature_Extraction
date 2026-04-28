@@ -1,0 +1,20 @@
+Dataset: JNPA 2.5m PAN Patch Classifier V2
+
+Why V2 is more accurate:
+The original U-Net was trained on uniform patch masks, but the labels themselves were only patch-level pseudo-labels.
+This V2 pipeline trains a random-forest patch classifier directly on the clustered patch features, which matches the label design much better.
+
+Validation accuracy: 0.8776
+Validation macro F1: 0.8556
+Train accuracy: 1.0000
+Train macro F1: 1.0000
+
+Final output map:
+outputs/jnpa_patch_classifier_v2/final_results_map_v2.png
+
+Main saved files:
+outputs/jnpa_patch_classifier_v2/run_summary_v2.json
+outputs/jnpa_patch_classifier_v2/patch_classifier_model_v2.joblib
+outputs/jnpa_patch_classifier_v2/filtered_patch_metadata_v2.csv
+outputs/jnpa_patch_classifier_v2/cluster_summary_v2.csv
+outputs/jnpa_patch_classifier_v2/predictions/patch_classifier_v2_overlay.png

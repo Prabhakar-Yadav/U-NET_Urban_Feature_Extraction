@@ -1,0 +1,15 @@
+JNPA Dense Segmentation V128 Dense Segmentation V128
+
+Teacher baseline pixel accuracy: 57.38%
+Teacher baseline mean IoU: 35.89%
+
+Hard U-Net pixel accuracy: 89.28%
+Hard U-Net mean IoU: 76.05%
+
+Soft U-Net pixel accuracy: 91.07%
+Soft U-Net mean IoU: 78.73%
+Soft U-Net soft CE: 1.1359
+
+Best variant: soft_unet_v128
+Best mean IoU improvement over current baseline: 42.83 percentage points
+Promote to platform: YES

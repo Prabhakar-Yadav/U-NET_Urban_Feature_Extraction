@@ -1,0 +1,158 @@
+VERSION COMPARISON - SIMPLE SUMMARY
+
+This file explains, in simple language, how the model versions differed for:
+
+1. JNPA dataset
+2. CARTOSAT / Panchromatic dataset
+
+Important note:
+All scores below are based on pseudo-labels created from clustering and manual cluster interpretation.
+These are not fully manual ground-truth masks.
+
+
+==================================================
+1. JNPA COMPARISON
+==================================================
+
+JNPA Version 1:
+- Model used: U-Net
+- Type: Deep learning segmentation model
+- Training style: Epoch-based training
+- Augmentation used: Yes
+- Output type: Pixel-wise mask
+
+JNPA Version 2:
+- Model used: Random Forest patch classifier
+- Type: Classical machine learning model
+- Training style: Direct fit on patch features
+- Augmentation used: No
+- Output type: One class per patch
+
+What stayed same in both versions:
+- Same image: JNPA/JNPA_2_5.tif
+- Same image type: Panchromatic grayscale
+- Same patch size: 256 x 256
+- Same filtering thresholds
+- Same 5 classes
+- Same pseudo-label source idea
+
+JNPA classes:
+- Water Bodies
+- Industrial / Port Infrastructure
+- Bare Land / Soil
+- Vegetation / Mangroves
+- Urban Built-up
+
+Main results:
+- Version 1 Pixel Accuracy: 48.96%
+- Version 1 Mean IoU: 33.50%
+- Version 2 Validation Accuracy: 87.76%
+- Version 2 Validation Macro F1: 85.56%
+
+Class-wise accuracy:
+- Water Bodies: V1 = 69.25%, V2 = 63.16%
+- Industrial / Port Infrastructure: V1 = 57.46%, V2 = 80.00%
+- Bare Land / Soil: V1 = 53.33%, V2 = 100.00%
+- Vegetation / Mangroves: V1 = 37.70%, V2 = 100.00%
+- Urban Built-up: V1 = 40.86%, V2 = 80.56%
+
+Why Version 2 worked better:
+- The labels were patch-based, not true detailed pixel masks.
+- U-Net is better when real pixel-level masks are available.
+- Random Forest patch classification matched the label design better.
+- So Version 2 learned the task more correctly.
+
+Final JNPA conclusion:
+- Version 2 is the better version to use.
+- It is faster, simpler, and much more accurate for this pseudo-labeled setup.
+
+
+==================================================
+2. CARTOSAT / PANCHROMATIC COMPARISON
+==================================================
+
+CARTOSAT Version 2:
+- Model used: Random Forest patch classifier
+- Number of classes: 3
+- Classes: Water, Urban, Terrain
+
+CARTOSAT Version 3:
+- Model used: Random Forest patch classifier
+- Number of classes: 4
+- Classes:
+  Water
+  Dense Urban Built-up
+  Port / Waterfront Infrastructure
+  Terrain / Open Ground
+
+What stayed same in both versions:
+- Same image: Monocromatic/CARTOSAT_1M_PAN.tif
+- Same patch size: 256 x 256
+- Same filtering settings
+- Same PCA and Random Forest pipeline
+- Same train split
+- No augmentation in either version
+
+Main results:
+- Version 2 Validation Accuracy: 94.16%
+- Version 2 Macro F1: 63.58%
+- Version 3 Validation Accuracy: 89.78%
+- Version 3 Macro F1: 74.64%
+
+Class-wise accuracy in Version 2:
+- Water: 97.30%
+- Urban: 96.61%
+- Terrain: 0.00%
+
+Class-wise accuracy in Version 3:
+- Water: 97.30%
+- Dense Urban Built-up: 94.74%
+- Port / Waterfront Infrastructure: 66.67%
+- Terrain / Open Ground: 25.00%
+
+Why Version 3 is still better:
+- Version 2 had high overall accuracy, but it was too simple.
+- It failed badly on the Terrain class.
+- Version 3 gives more meaningful land-use separation.
+- It can distinguish dense urban area from port / waterfront infrastructure.
+- Macro F1 improved, which shows better balanced performance.
+
+Final CARTOSAT conclusion:
+- Version 2 is better only if we want a very simple 3-class result.
+- Version 3 is better if we want more useful and realistic feature identification.
+- So Version 3 is the better final model for presentation and platform use.
+
+
+==================================================
+3. OVERALL FINAL DECISION
+==================================================
+
+Best JNPA version:
+- Version 2
+
+Best CARTOSAT / Panchromatic version:
+- Version 3
+
+Reason:
+- JNPA Version 2 matches the pseudo-label structure better.
+- CARTOSAT Version 3 gives more useful class separation.
+
+
+==================================================
+4. RELATED FILES
+==================================================
+
+Detailed comparison file:
+- version_comparison.md
+
+JNPA old summary:
+- outputs/jnpa_training_run/run_summary.json
+
+JNPA improved summary:
+- outputs/jnpa_patch_classifier_v2/run_summary_v2.json
+
+CARTOSAT previous summary:
+- outputs/cartosat_patch_classifier_v2/run_summary_v2.json
+
+CARTOSAT improved summary:
+- outputs/cartosat_patch_classifier_v3_4class/run_summary_v3.json

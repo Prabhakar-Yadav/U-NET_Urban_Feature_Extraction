@@ -1,0 +1,58 @@
+# Virtual environment
+venv310/
+venv*/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Large satellite imagery (raw data) - not needed to run the platform
+Aerial_RGB/*.tif
+Aerial_RGB/*.tfw
+Aerial_RGB/*.aux.xml
+Aerial_RGB/*.ovr
+Aerial_RGB/*.cpg
+Aerial_RGB/*.dbf
+Cartosat/*.tif
+Cartosat/*.csv
+Cartosat/Monocromatic/
+Cartosat/training_patches/
+Cartosat/satellite_autoencoder.pth
+Cartosat/cartosat_6_class_model.pth
+Vashi_sentinel2/Undestading_Data/
+Vashi_sentinel2/data/
+
+# Duplicate checkpoints (keep only *_checkpoint.pth which the platform loads)
+*_best.pth
+
+# Intermediate segmap outputs in model folders
+*/models/*_segmap.tif
+
+# Test raw data (ESRI Grid format)
+Test_Model/Test_Data/
+Test_Data/
+
+# Report and presentation files
+*.docx
+*.pptx
+*.pdf
+generate_report.py
+generate_charts.py
+report_figures/
+
+# Claude config
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

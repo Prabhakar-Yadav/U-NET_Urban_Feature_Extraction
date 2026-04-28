@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+
+web_platform/runtime/uploads/*
+!web_platform/runtime/uploads/.gitkeep
+
+web_platform/runtime/results/*
+!web_platform/runtime/results/.gitkeep
+
+web_platform/runtime/cache/dense_auto_selector/

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Urban Feature Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Remote Sensing Inference Platform</p>
+          <h1>Upload an image, match it to the right trained model, and get a feature map in minutes.</h1>
+          <p class="hero-text">
+            This platform runs only on trained project models, including the new 128x128 dense U-Net production models, the earlier patch-classifier baselines, and older U-Net comparison checkpoints.
+            It returns a marked image, a segmentation map, class percentage coverage, and the model-fit score used for selection.
+          </p>
+          <div class="hero-metrics">
+            <div class="metric-pill">
+              <span class="metric-value">{{ models|length }}</span>
+              <span class="metric-label">enabled models</span>
+            </div>
+            <div class="metric-pill">
+              <span class="metric-value">{{ max_upload_mb }} MB</span>
+              <span class="metric-label">upload limit</span>
+            </div>
+            <div class="metric-pill">
+              <span class="metric-value">{{ allowed_extensions }}</span>
+              <span class="metric-label">accepted formats</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-card">
+            <h2>What You Get</h2>
+            <ul class="hero-list">
+              <li>Automatic model selection between the promoted JNPA and CARTOSAT dense models</li>
+              <li>Manual comparison against older patch-classifier and U-Net project checkpoints</li>
+              <li>Color-coded feature detection map and marked preview overlay</li>
+              <li>Percentage area by class for the uploaded scene</li>
+              <li>Downloadable result files for reporting and backend reuse</li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout-grid">
+        <section class="panel upload-panel">
+          <div class="panel-header">
+            <p class="panel-kicker">Step 1</p>
+            <h2>Upload Imagery</h2>
+          </div>
+
+          <form id="upload-form" class="upload-form" enctype="multipart/form-data">
+            <label id="drop-zone" class="drop-zone" for="file-input">
+              <input id="file-input" name="image" type="file" accept=".png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.gif" hidden>
+              <span class="drop-title">Drag and drop an image here</span>
+              <span class="drop-subtitle">or click to browse local files</span>
+              <span id="selected-file" class="selected-file">No file selected yet</span>
+            </label>
+
+            <div class="control-grid">
+              <label class="field">
+                <span>Model Selection</span>
+                <select id="model-mode" name="model_mode">
+                  <option value="auto">Auto select best model</option>
+                  <option value="manual">Choose model manually</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Manual Model</span>
+                <select id="model-id" name="model_id" disabled>
+                  <option value="">Select a trained model</option>
+                  {% for model in models %}
+                    <option value="{{ model.id }}">{{ model.display_name }}{% if not model.available_in_auto %} - manual compare{% endif %}</option>
+                  {% endfor %}
+                </select>
+              </label>
+            </div>
+
+            <div class="button-row">
+              <button id="submit-button" class="primary-button" type="submit">Run Prediction</button>
+              <p class="helper-text">Best for PAN, grayscale, or remote-sensing imagery. Large GeoTIFF satellite files are processed in streaming mode, and uploads up to roughly 500 MB are supported.</p>
+            </div>
+          </form>
+
+          <div id="status-card" class="status-card hidden" aria-live="polite"></div>
+        </section>
+
+        <aside class="panel model-panel">
+          <div class="panel-header">
+            <p class="panel-kicker">Step 2</p>
+            <h2>Available Models</h2>
+          </div>
+          <div class="model-cards">
+            {% for model in models %}
+              <article class="model-card">
+                <div class="model-card-top">
+                  <h3>{{ model.display_name }}</h3>
+                  <div class="model-tag-row">
+                    <span class="model-tag">{{ model.dataset_name }}</span>
+                    <span class="model-tag">{{ model.model_type|replace('_', ' ')|title }}</span>
+                    <span class="model-tag {% if not model.available_in_auto %}compare{% endif %}">
+                      {% if model.available_in_auto %}Auto + Manual{% else %}Manual Compare{% endif %}
+                    </span>
+                  </div>
+                </div>
+                <p class="model-score">{{ model.primary_metric_label }}: {{ "%.2f"|format((model.primary_metric_value or 0) * 100) }}%</p>
+                {% if model.secondary_metric_value is not none %}
+                  <p class="model-score">{{ model.secondary_metric_label }}: {{ "%.2f"|format((model.secondary_metric_value or 0) * 100) }}%</p>
+                {% endif %}
+                <p class="model-classes">
+                  {% for class_id, class_name in model.class_names.items() %}
+                    <span>{{ class_name }}</span>
+                  {% endfor %}
+                </p>
+              </article>
+            {% endfor %}
+          </div>
+        </aside>
+      </main>
+
+      <section id="results-section" class="results-shell hidden">
+        <div class="results-header">
+          <div>
+            <p class="panel-kicker">Step 3</p>
+            <h2>Prediction Results</h2>
+          </div>
+          <p id="result-note" class="result-note"></p>
+        </div>
+
+        <div class="results-summary-grid">
+          <div class="summary-card">
+            <span class="summary-label">Selected model</span>
+            <strong id="selected-model-name">-</strong>
+            <span id="selected-model-dataset" class="summary-subtext">-</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Dominant class</span>
+            <strong id="dominant-class-name">-</strong>
+            <span id="fit-score" class="summary-subtext">-</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Input image</span>
+            <strong id="input-shape">-</strong>
+            <span id="input-loader" class="summary-subtext">-</span>
+          </div>
+        </div>
+
+        <div class="result-visual-grid">
+          <article class="visual-card">
+            <div class="visual-card-header">
+              <h3>Uploaded Image</h3>
+              <a id="input-preview-link" class="text-link" href="#" target="_blank" rel="noopener">Open</a>
+            </div>
+            <img id="input-preview" alt="Uploaded image preview">
+          </article>
+
+          <article class="visual-card">
+            <div class="visual-card-header">
+              <h3>Marked Result</h3>
+              <a id="marked-link" class="text-link" href="#" target="_blank" rel="noopener">Open</a>
+            </div>
+            <img id="marked-preview" alt="Marked image result preview">
+          </article>
+
+          <article class="visual-card">
+            <div class="visual-card-header">
+              <h3>Segmentation Map</h3>
+              <a id="segmentation-link" class="text-link" href="#" target="_blank" rel="noopener">Open</a>
+            </div>
+            <img id="segmentation-preview" alt="Segmentation map preview">
+          </article>
+        </div>
+
+        <div class="analysis-grid">
+          <article class="panel class-panel">
+            <div class="panel-header compact">
+              <h3>Class Coverage</h3>
+            </div>
+            <div id="class-breakdown" class="class-breakdown"></div>
+            <div id="legend-row" class="legend-row"></div>
+          </article>
+
+          <article class="panel fit-panel">
+            <div class="panel-header compact">
+              <h3>Model Ranking</h3>
+            </div>
+            <div id="candidate-ranking" class="candidate-ranking"></div>
+          </article>
+        </div>
+
+        <div class="downloads-card">
+          <div class="panel-header compact">
+            <h3>Download Results</h3>
+          </div>
+          <div id="download-links" class="download-links"></div>
+        </div>
+      </section>
+
+      <section class="documentation-strip">
+        <div class="doc-card">
+          <h3>Model Updates</h3>
+          <p>Retrained models or new datasets can be added through the registry without changing the UI.</p>
+          <p class="doc-path">See <code>urban_feature_platform/docs/MODEL_MANAGEMENT.md</code></p>
+        </div>
+        <div class="doc-card">
+          <h3>Deployment</h3>
+          <p>The app supports local Flask use and production deployment through Gunicorn.</p>
+          <p class="doc-path">See <code>urban_feature_platform/docs/DEPLOYMENT.md</code></p>
+        </div>
+      </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  </body>
+</html>

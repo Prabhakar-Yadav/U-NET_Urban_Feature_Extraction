@@ -1,0 +1,20 @@
+{
+  "config": {},
+  "dataset": {
+    "name": "Vashi Sentinel-2 (4-Band)",
+    "class_names": {
+      "0": "Background",
+      "1": "Water",
+      "2": "Buildings",
+      "3": "Roads",
+      "4": "Vegetation",
+      "5": "Open Ground",
+      "6": "Other Land"
+    }
+  },
+  "metrics": {
+    "val_accuracy": 0.87,
+    "val_macro_f1": null,
+    "mean_iou": 0.72
+  }
+}

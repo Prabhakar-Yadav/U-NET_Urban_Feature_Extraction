@@ -1,0 +1,20 @@
+Dataset: CARTOSAT 1m PAN Patch Classifier V3 (4-Class)
+
+Why V3 is more accurate:
+The original U-Net was trained on uniform patch masks, but the labels themselves were only patch-level pseudo-labels.
+This V3 pipeline trains a random-forest patch classifier directly on the clustered patch features, which matches the label design much better.
+
+Validation accuracy: 0.8978
+Validation macro F1: 0.7464
+Train accuracy: 1.0000
+Train macro F1: 1.0000
+
+Final output map:
+outputs/cartosat_patch_classifier_v3_4class/final_results_map_v3.png
+
+Main saved files:
+outputs/cartosat_patch_classifier_v3_4class/run_summary_v3.json
+outputs/cartosat_patch_classifier_v3_4class/patch_classifier_model_v3.joblib
+outputs/cartosat_patch_classifier_v3_4class/filtered_patch_metadata_v3.csv
+outputs/cartosat_patch_classifier_v3_4class/cluster_summary_v3.csv
+outputs/cartosat_patch_classifier_v3_4class/predictions/patch_classifier_v3_overlay.png

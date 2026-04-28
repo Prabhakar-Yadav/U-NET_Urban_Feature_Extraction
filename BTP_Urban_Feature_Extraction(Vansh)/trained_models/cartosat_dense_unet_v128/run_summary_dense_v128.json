@@ -1,0 +1,245 @@
+{
+  "config": {
+    "dataset_key": "cartosat_dense_v128",
+    "output_dir": "outputs/cartosat_dense_segmentation_v128",
+    "seed": 42,
+    "robust_percentiles": [
+      1.0,
+      99.0
+    ],
+    "resize_for_teacher_features": 32,
+    "teacher_canny_low": 60,
+    "teacher_canny_high": 160,
+    "pixel_mlp_hidden": 64,
+    "pixel_mlp_epochs": 18,
+    "pixel_mlp_batch_size": 8192,
+    "pixel_mlp_learning_rate": 0.001,
+    "pixel_val_fraction": 0.2,
+    "unet_epochs": 8,
+    "unet_batch_size": 24,
+    "unet_learning_rate": 0.0008,
+    "unet_weight_decay": 0.0001,
+    "unet_patience": 3,
+    "train_fraction": 0.8,
+    "num_workers": 0,
+    "base_channels": 16,
+    "preview_count": 8,
+    "compare_margin_miou": 0.03,
+    "max_train_patches": 1800,
+    "max_val_patches": 480
+  },
+  "dataset": {
+    "name": "CARTOSAT Dense Segmentation V128",
+    "image_path": "Monocromatic/CARTOSAT_1M_PAN.tif",
+    "class_names": {
+      "0": "Water",
+      "1": "Dense Urban Built-up",
+      "2": "Port / Waterfront Infrastructure",
+      "3": "Terrain / Open Ground"
+    },
+    "raster_metadata": {
+      "path": "Monocromatic/CARTOSAT_1M_PAN.tif",
+      "width": 11269,
+      "height": 9985,
+      "dtype": "uint16",
+      "crs": "EPSG:32643",
+      "transform": [
+        1.0,
+        0.0,
+        263308.0,
+        0.0,
+        -1.0,
+        2097486.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nodata": 0.0,
+      "normalization_low": 43.0,
+      "normalization_high": 81.0
+    },
+    "teacher_patch_size": 256,
+    "student_patch_size": 128,
+    "teacher_seed_patch_count": 533,
+    "dense_dataset_patch_count": 6358,
+    "train_patch_count": 1800,
+    "val_patch_count": 480
+  },
+  "pixel_teacher_metrics": {
+    "pixel_accuracy": 0.7499511432479968,
+    "class_accuracy": [
+      0.9575320512820513,
+      0.6669560185185185,
+      0.29506008010680906,
+      0.5138888888888888
+    ],
+    "class_iou": [
+      0.9003578828404596,
+      0.5403187998124707,
+      0.2051996285979573,
+      0.13909774436090225
+    ],
+    "mean_iou": 0.4462435139029475,
+    "val_accuracy": 0.7499511432479968,
+    "feature_mean": [
+      0.27548614144325256,
+      0.27506959438323975,
+      0.06125674769282341,
+      0.2752591669559479,
+      0.08139373362064362,
+      0.3277508616447449,
+      0.34971657395362854,
+      0.3116724491119385
+    ],
+    "feature_std": [
+      0.19749024510383606,
+      0.1831756830215454,
+      0.040383052080869675,
+      0.16742132604122162,
+      0.06656166911125183,
+      0.3062296509742737,
+      0.2955839931964874,
+      0.46314725279808044
+    ]
+  },
+  "teacher_baseline_metrics": {
+    "pixel_accuracy": 0.6953292846679687,
+    "class_accuracy": [
+      0.9822412704878897,
+      0.25334729075446094,
+      0.34663159465056687,
+      0.2302039293394545
+    ],
+    "class_iou": [
+      0.7257989015153056,
+      0.22078041737800838,
+      0.20441369959777841,
+      0.19461832752538977
+    ],
+    "mean_iou": 0.3364028365041205
+  },
+  "hard_unet": {
+    "training": {
+      "best_epoch": 8,
+      "best_val_metrics": {
+        "pixel_accuracy": 0.9397299448649089,
+        "class_accuracy": [
+          0.967474935808441,
+          0.9228722869752969,
+          0.8665296254694794,
+          0.7907663295996289
+        ],
+        "class_iou": [
+          0.9594593516335148,
+          0.8645656483963019,
+          0.5828006775499605,
+          0.68950713219567
+        ],
+        "mean_iou": 0.7740832024438618
+      }
+    },
+    "final_val_metrics": {
+      "pixel_accuracy": 0.9397299448649089,
+      "class_accuracy": [
+        0.967474935808441,
+        0.9228722869752969,
+        0.8665296254694794,
+        0.7907663295996289
+      ],
+      "class_iou": [
+        0.9594593516335148,
+        0.8645656483963019,
+        0.5828006775499605,
+        0.68950713219567
+      ],
+      "mean_iou": 0.7740832024438618
+    },
+    "history_path": "outputs/cartosat_dense_segmentation_v128/hard_unet_history.csv",
+    "model_path": "outputs/cartosat_dense_segmentation_v128/hard_unet_best_model.pt",
+    "prediction_maps": {
+      "label_path": "outputs/cartosat_dense_segmentation_v128/predictions/hard_unet_v128_labels.npy",
+      "color_path": "outputs/cartosat_dense_segmentation_v128/predictions/hard_unet_v128_color.png",
+      "overlay_path": "outputs/cartosat_dense_segmentation_v128/predictions/hard_unet_v128_overlay.png"
+    }
+  },
+  "soft_unet": {
+    "training": {
+      "best_epoch": 6,
+      "best_val_metrics": {
+        "pixel_accuracy": 0.9263763427734375,
+        "class_accuracy": [
+          0.9729886690410627,
+          0.9081534714561876,
+          0.7123237197061081,
+          0.722307340873696
+        ],
+        "class_iou": [
+          0.9616808159033947,
+          0.8476478510791599,
+          0.4499384213420961,
+          0.5835785618291904
+        ],
+        "mean_iou": 0.7107114125384603,
+        "soft_cross_entropy": 0.8089307993650436
+      }
+    },
+    "final_val_metrics": {
+      "pixel_accuracy": 0.9264364878336588,
+      "class_accuracy": [
+        0.98290765135081,
+        0.9078821769093828,
+        0.4764250466059875,
+        0.8783050085945999
+      ],
+      "class_iou": [
+        0.9567941461733683,
+        0.8552904237713996,
+        0.38067349413636714,
+        0.5894132393793617
+      ],
+      "mean_iou": 0.6955428258651242,
+      "soft_cross_entropy": 0.8114469975233078
+    },
+    "history_path": "outputs/cartosat_dense_segmentation_v128/soft_unet_history.csv",
+    "model_path": "outputs/cartosat_dense_segmentation_v128/soft_unet_best_model.pt",
+    "prediction_maps": {
+      "label_path": "outputs/cartosat_dense_segmentation_v128/predictions/soft_unet_v128_labels.npy",
+      "color_path": "outputs/cartosat_dense_segmentation_v128/predictions/soft_unet_v128_color.png",
+      "overlay_path": "outputs/cartosat_dense_segmentation_v128/predictions/soft_unet_v128_overlay.png"
+    }
+  },
+  "best_variant": "hard_unet_v128",
+  "best_variant_metrics": {
+    "pixel_accuracy": 0.9397299448649089,
+    "class_accuracy": [
+      0.967474935808441,
+      0.9228722869752969,
+      0.8665296254694794,
+      0.7907663295996289
+    ],
+    "class_iou": [
+      0.9594593516335148,
+      0.8645656483963019,
+      0.5828006775499605,
+      0.68950713219567
+    ],
+    "mean_iou": 0.7740832024438618
+  },
+  "teacher_baseline_maps": {
+    "label_path": "outputs/cartosat_dense_segmentation_v128/predictions/teacher_baseline_v256_labels.npy",
+    "color_path": "outputs/cartosat_dense_segmentation_v128/predictions/teacher_baseline_v256_color.png",
+    "overlay_path": "outputs/cartosat_dense_segmentation_v128/predictions/teacher_baseline_v256_overlay.png"
+  },
+  "comparison": {
+    "baseline_mean_iou": 0.3364028365041205,
+    "best_mean_iou": 0.7740832024438618,
+    "mean_iou_improvement": 0.43768036593974124,
+    "should_promote_to_platform": true,
+    "promotion_rule": "Promote only if mean IoU improves by at least 0.03."
+  },
+  "artifacts": {
+    "dense_preview_panel": "outputs/cartosat_dense_segmentation_v128/dense_label_preview_panel.png",
+    "comparison_board": "outputs/cartosat_dense_segmentation_v128/comparison_summary_board.png",
+    "dense_metadata_path": "outputs/cartosat_dense_segmentation_v128/dense_dataset/metadata.csv"
+  }
+}

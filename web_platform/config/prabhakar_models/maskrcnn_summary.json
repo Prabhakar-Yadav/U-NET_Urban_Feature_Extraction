@@ -1,0 +1,15 @@
+{
+  "config": {},
+  "dataset": {
+    "name": "Vashi Sentinel-2 Building Detection",
+    "class_names": {
+      "0": "Background",
+      "1": "Building"
+    }
+  },
+  "metrics": {
+    "val_accuracy": 0.78,
+    "val_macro_f1": null,
+    "mean_iou": 0.65
+  }
+}

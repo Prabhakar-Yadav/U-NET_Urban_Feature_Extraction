@@ -1,0 +1,114 @@
+V128 DENSE MODEL UPGRADE SUMMARY
+
+Date:
+- 2026-03-24
+
+What changed:
+- New 128x128 segmentation pipeline created
+- Two variants tested for each dataset:
+  1. Hard per-pixel pseudo masks
+  2. Soft per-pixel probability masks
+- Compared against the current platform baseline for the same dataset
+
+--------------------------------------------------
+1. JNPA RESULT
+--------------------------------------------------
+
+Baseline used for comparison:
+- Previous production JNPA patch-classifier baseline
+- Evaluated against the new dense pseudo-mask validation setup
+
+JNPA baseline:
+- Pixel Accuracy: 57.38%
+- Mean IoU: 35.89%
+
+JNPA hard U-Net V128:
+- Pixel Accuracy: 89.28%
+- Mean IoU: 76.05%
+
+JNPA soft U-Net V128:
+- Pixel Accuracy: 91.07%
+- Mean IoU: 78.73%
+
+Best JNPA model:
+- Soft U-Net V128
+
+Improvement over previous baseline:
+- Mean IoU improvement: +42.83 percentage points
+
+Promote to platform:
+- YES
+
+Main result folder:
+- outputs/jnpa_dense_segmentation_v128
+
+Main files:
+- outputs/jnpa_dense_segmentation_v128/run_summary_dense_v128.json
+- outputs/jnpa_dense_segmentation_v128/soft_unet_best_model.pt
+- outputs/jnpa_dense_segmentation_v128/predictions/soft_unet_v128_overlay.png
+
+--------------------------------------------------
+2. CARTOSAT RESULT
+--------------------------------------------------
+
+Baseline used for comparison:
+- Previous production CARTOSAT patch-classifier baseline
+- Evaluated against the new dense pseudo-mask validation setup
+
+CARTOSAT baseline:
+- Pixel Accuracy: 69.53%
+- Mean IoU: 33.64%
+
+CARTOSAT hard U-Net V128:
+- Pixel Accuracy: 93.97%
+- Mean IoU: 77.41%
+
+CARTOSAT soft U-Net V128:
+- Pixel Accuracy: 92.64%
+- Mean IoU: 69.55%
+
+Best CARTOSAT model:
+- Hard U-Net V128
+
+Improvement over previous baseline:
+- Mean IoU improvement: +43.77 percentage points
+
+Promote to platform:
+- YES
+
+Main result folder:
+- outputs/cartosat_dense_segmentation_v128
+
+Main files:
+- outputs/cartosat_dense_segmentation_v128/run_summary_dense_v128.json
+- outputs/cartosat_dense_segmentation_v128/hard_unet_best_model.pt
+- outputs/cartosat_dense_segmentation_v128/predictions/hard_unet_v128_overlay.png
+
+--------------------------------------------------
+3. PLATFORM PROMOTION
+--------------------------------------------------
+
+New promoted platform models:
+- jnpa_dense_v128_prod
+- cartosat_dense_v128_prod
+
+Platform registry updated:
+- urban_feature_platform/config/model_registry.json
+
+Previous patch-classifier production models were kept:
+- still enabled
+- moved out of auto-selection
+- available for manual comparison
+
+--------------------------------------------------
+4. FINAL DECISION
+--------------------------------------------------
+
+JNPA:
+- Replace old production model with Soft U-Net V128
+
+CARTOSAT:
+- Replace old production model with Hard U-Net V128
+
+Reason:
+- Both new V128 dense models showed very large mean-IoU gains over the previous production baselines.

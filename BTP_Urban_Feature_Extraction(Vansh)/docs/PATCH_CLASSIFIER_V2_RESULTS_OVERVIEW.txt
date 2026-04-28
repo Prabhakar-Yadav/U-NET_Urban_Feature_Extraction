@@ -1,0 +1,87 @@
+Improved Patch Classifier V2 - Results Overview
+
+Why accuracy improved:
+The earlier JNPA model used a U-Net segmentation network, but the pseudo-labels were only patch-level labels.
+That mismatch limited the score.
+
+The new V2 pipeline uses:
+1. Unsupervised clustering to create pseudo-labels
+2. PCA-reduced patch features
+3. Random-forest patch classification
+4. Full-scene patch-wise reconstruction
+
+This matches the label design much better and gives much higher validation accuracy.
+
+--------------------------------------------------
+1. Earlier JNPA U-Net Run
+--------------------------------------------------
+Folder:
+outputs/jnpa_training_run
+
+Main metrics:
+- Validation Pixel Accuracy: 0.4896
+- Validation Mean IoU: 0.3350
+
+Main map:
+outputs/jnpa_training_run/final_results_map.png
+
+--------------------------------------------------
+2. Improved JNPA V2 Run
+--------------------------------------------------
+Folder:
+outputs/jnpa_patch_classifier_v2
+
+Main metrics:
+- Validation Accuracy: 0.8776
+- Validation Macro F1: 0.8556
+
+Main files:
+- Results summary:
+  outputs/jnpa_patch_classifier_v2/RESULTS_SUMMARY_V2.txt
+- JSON summary:
+  outputs/jnpa_patch_classifier_v2/run_summary_v2.json
+- Saved classifier:
+  outputs/jnpa_patch_classifier_v2/patch_classifier_model_v2.joblib
+- Final map:
+  outputs/jnpa_patch_classifier_v2/final_results_map_v2.png
+
+Recommended JNPA result to use:
+outputs/jnpa_patch_classifier_v2/final_results_map_v2.png
+
+--------------------------------------------------
+3. Improved CARTOSAT V2 Run
+--------------------------------------------------
+Folder:
+outputs/cartosat_patch_classifier_v2
+
+Main metrics:
+- Validation Accuracy: 0.9416
+- Validation Macro F1: 0.6358
+
+Note:
+The CARTOSAT scene is dominated by water and urban patches.
+The terrain class is much smaller and harder to separate cleanly in this monochromatic scene.
+So overall accuracy is very high, but macro F1 is lower because terrain is underrepresented.
+
+Main files:
+- Results summary:
+  outputs/cartosat_patch_classifier_v2/RESULTS_SUMMARY_V2.txt
+- JSON summary:
+  outputs/cartosat_patch_classifier_v2/run_summary_v2.json
+- Saved classifier:
+  outputs/cartosat_patch_classifier_v2/patch_classifier_model_v2.joblib
+- Final map:
+  outputs/cartosat_patch_classifier_v2/final_results_map_v2.png
+
+Recommended CARTOSAT result to use:
+outputs/cartosat_patch_classifier_v2/final_results_map_v2.png
+
+--------------------------------------------------
+4. Distinct New Files Created
+--------------------------------------------------
+- urban_feature_patch_classifier_v2.py
+- outputs/jnpa_patch_classifier_v2/
+- outputs/cartosat_patch_classifier_v2/
+- PATCH_CLASSIFIER_V2_RESULTS_OVERVIEW.txt
+
+These do not overwrite the earlier U-Net files.

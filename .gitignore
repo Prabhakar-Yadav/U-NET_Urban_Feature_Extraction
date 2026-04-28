@@ -1,0 +1,61 @@
+# Virtual environment
+venv*/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Runtime outputs (regenerated on use)
+web_platform/runtime/
+
+# Large satellite imagery (raw data)
+*.tif
+*.tfw
+*.aux.xml
+*.ovr
+*.cpg
+*.dbf
+
+# Keep test GeoTIFFs
+!Test_Model/**/*.tif
+
+# Training patches and raw data (thousands of files, not needed to run)
+**/training_patches/
+**/Monocromatic/
+**/data/
+
+# Duplicate / non-essential model files
+*_best.pth
+satellite_autoencoder.pth
+cartosat_6_class_model.pth
+pixel_teacher_mlp.pt
+
+# Intermediate outputs
+*_segmap.tif
+
+# Reports and presentations
+*.docx
+*.pptx
+*.pdf
+report_figures/
+report_and_presentation/
+
+# Test raw data (ESRI Grid)
+Test_Model/Test_Data/
+
+# Claude config
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -1,0 +1,19 @@
+{
+  "config": {},
+  "dataset": {
+    "name": "Cartosat Panchromatic (ResNet-18)",
+    "class_names": {
+      "0": "Low Vegetation",
+      "1": "Beaches/Shores",
+      "2": "Roads & Pavement",
+      "3": "Urban Built-up",
+      "4": "Water/Shadows",
+      "5": "Bare Earth"
+    }
+  },
+  "metrics": {
+    "val_accuracy": 0.81,
+    "val_macro_f1": null,
+    "mean_iou": null
+  }
+}

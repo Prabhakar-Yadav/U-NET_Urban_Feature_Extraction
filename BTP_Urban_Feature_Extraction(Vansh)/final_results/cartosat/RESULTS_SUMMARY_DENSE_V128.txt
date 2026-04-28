@@ -1,0 +1,15 @@
+CARTOSAT Dense Segmentation V128 Dense Segmentation V128
+
+Teacher baseline pixel accuracy: 69.53%
+Teacher baseline mean IoU: 33.64%
+
+Hard U-Net pixel accuracy: 93.97%
+Hard U-Net mean IoU: 77.41%
+
+Soft U-Net pixel accuracy: 92.64%
+Soft U-Net mean IoU: 69.55%
+Soft U-Net soft CE: 0.8114
+
+Best variant: hard_unet_v128
+Best mean IoU improvement over current baseline: 43.77 percentage points
+Promote to platform: YES
