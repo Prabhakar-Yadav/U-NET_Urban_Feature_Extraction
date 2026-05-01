@@ -55,8 +55,8 @@ Feature-Ext(Prabhakar)/
 ## Setup
 
 ```bash
-git clone https://github.com/Prabhakar-Yadav/Urban-Feature-Ext.git
-cd Urban-Feature-Ext
+git clone https://github.com/Prabhakar-Yadav/U-NET_Urban_Feature_Extraction.git
+cd U-NET_Urban_Feature_Extraction
 
 # Pull model checkpoints (requires Git LFS)
 git lfs pull
